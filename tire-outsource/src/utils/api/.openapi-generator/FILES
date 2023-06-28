@@ -1,0 +1,13 @@
+apis/ApiApi.ts
+apis/index.ts
+index.ts
+models/Car.ts
+models/CarTireSizesInner.ts
+models/Review.ts
+models/ReviewTire.ts
+models/Store.ts
+models/Tire.ts
+models/TireManufacturer.ts
+models/TireSizesInner.ts
+models/index.ts
+runtime.ts
