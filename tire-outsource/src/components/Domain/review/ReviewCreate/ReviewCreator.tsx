@@ -432,7 +432,6 @@ export const ReviewCreator = () => {
                         type="file"
                         accept="image/*"
                         {...field}
-                        id="image"
                         focusBorderColor="brand.400"
                         shadow="sm"
                         size="sm"

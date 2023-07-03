@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Center, Flex, Divider, Heading } from "@chakra-ui/react";
 import { StoreListItem } from "@/components/Domain/Store/StoreListItem/StoreListItem";
 import { CallToActionWithAnnotation, Banner } from "@/components/UI/Banner";
@@ -6,10 +6,26 @@ import { useScroll } from "@/utils/hooks/useScroll";
 import { useGetStoreList } from "@/components/Domain/Store/StoreListPage.hooks";
 import ReviewListItem from "@/components/Domain/review/ReviewListItem";
 import { ReviewSearchBar } from "@/components/Domain/review/ReviewSearchBar";
+import { useRouter } from "next/router";
 
 const StorePage = () => {
   const { targetRef, scrollToTarget } = useScroll();
   const { data, status } = useGetStoreList();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    // When the component is unmounted, unsubscribe from the event
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   const RenderedStoreList = () => {
     return (

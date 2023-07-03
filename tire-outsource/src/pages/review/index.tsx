@@ -7,6 +7,7 @@ import ReviewListItem from "@/components/Domain/review/ReviewListItem";
 import { useGetReviewList } from "@/components/Domain/review/ReviewListPage.hooks";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { filteredReviewList, reviewList } from "@/state/state.reviewList";
+import { useRouter } from "next/router";
 
 const ReviewListPage = () => {
   const { targetRef, scrollToTarget } = useScroll();
@@ -18,6 +19,21 @@ const ReviewListPage = () => {
       setReviews(data);
     }
   }, [data]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    // When the component is unmounted, unsubscribe from the event
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
   const RenderedReviewList = () => {
     return (
       <>

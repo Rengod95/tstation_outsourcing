@@ -61,7 +61,13 @@ export const HeaderLogo = () => {
       }}
       cursor={"pointer"}
     >
-      <Img src={"/logo.png"} alt={"logo"} w={"50%"} maxH={"50%"} />
+      <Img
+        src={"/logo.png"}
+        alt={"logo"}
+        w={"100%"}
+        maxH={"7rem"}
+        objectFit={"contain"}
+      />
     </Center>
   );
 };
@@ -221,13 +227,14 @@ export const HeaderNav = () => {
         })}
       </Flex>
       <Button
-        boxShadow={"base"}
         minH={"4rem"}
-        bgColor="green.400"
+        bgColor={"white"}
         onClick={onOpen}
         display={!isPC ? "flex" : "none"}
+        mr={"5%"}
+        p={0}
       >
-        <HamburgerIcon w={"2rem"} h={"2rem"} color={"white"} />
+        <HamburgerIcon w={"3rem"} h={"3rem"} color={"black"} />
       </Button>
       <HeaderMenuDrawer
         finalFocusRef={btnRef as RefObject<FocusableElement>}

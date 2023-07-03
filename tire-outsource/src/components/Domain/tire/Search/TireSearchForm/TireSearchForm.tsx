@@ -1,94 +1,162 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Select,
   Spinner,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { DevTool } from "@hookform/devtools";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  carManufacturerListState,
+  tireListWithFilterState,
+} from "@/state/state.tire";
+import {
+  useGetCarList,
+  useGetTireList,
+} from "@/components/Domain/tire/tire.hooks";
+import { Car, TireManufacturer } from "@/utils/api";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
-const TireSearchForm = () => {
-  const { register, handleSubmit, watch, setValue, control, formState } =
-    useForm({
-      defaultValues: {
-        manufacturer: "kia",
-        model: "benz2",
-        size: "qqq",
-      },
-    });
-  const menufacturerSelected = watch("manufacturer");
-  const modelSelected = watch("model");
+const TireSearchForm = ({ onClose }: { onClose: (...args: any) => void }) => {
+  const { data: tireListData } = useGetTireList();
+  const { data: carListData } = useGetCarList();
+  const [selectedCarManufacturer, setSelectedCarManufacturer] =
+    useState<string>("");
+  const [selectedCar, setSelectedCar] = useState<string>("");
+  const [selectedTireSize, setSelectedTireSize] = useState<string>("");
+  const setFilter = useSetRecoilState(tireListWithFilterState);
+  const { isOpen, onClose: alertClose, onOpen: alertOpen } = useDisclosure();
 
-  const onSubmit = (data) => {};
-  console.log(formState);
+  const carManufacturerList: string[] = [
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ...new Set(carListData?.map((car) => car.manufacturerName)),
+  ];
+
+  const getCarListFromSelectedManufacturer = (): Car[] => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return carListData?.filter(
+      (car) => car.manufacturerName === selectedCarManufacturer
+    );
+  };
+
+  const handleClickSearchButton = () => {
+    if (selectedTireSize.length === 0) {
+      alertOpen();
+    } else {
+      if (tireListData) {
+        setFilter(
+          tireListData.filter(
+            (tire) => tire.manufacturer.name === selectedTireSize
+          )
+        );
+      }
+
+      onClose();
+    }
+  };
 
   return (
-    <Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box padding={4}>
-          <FormControl marginY={4}>
-            <FormLabel>차량 제조사</FormLabel>
-            <Select
-              {...register("manufacturer")}
-              onChange={(e) => setValue("manufacturer", e.target.value)}
+    <Flex p={4}>
+      <Flex
+        flexDirection={"column"}
+        justify={"start"}
+        align={"center"}
+        w={"100%"}
+        mt={2}
+      >
+        <Flex w={"100%"} flexDirection={"column"} mb={4}>
+          <Heading mb={6}>타이어 제조사 선택</Heading>
+          <Menu>
+            <MenuButton
+              boxShadow={"base"}
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              fontSize={"xl"}
             >
-              <option key={"kia"} value={"kia"}>
-                kia
-              </option>
-              <option key={"현대"} value={"현대"}>
-                hyundai
-              </option>
-              <option key={"벤츠"} value={"벤츠"}>
-                benz
-              </option>
-            </Select>
-          </FormControl>
-
-          <FormControl marginY={4}>
-            <FormLabel>차종</FormLabel>
-            <Select
-              name={"model"}
-              {...register("model")}
-              onChange={(e) => setValue("model", e.target.value)}
-              disabled={!menufacturerSelected}
+              {selectedCarManufacturer.length === 0
+                ? "차량 제조사를 선택해주세요"
+                : selectedCarManufacturer}
+            </MenuButton>
+            <MenuList h={"4rem"}>
+              {carManufacturerList.map((man) => {
+                return (
+                  <MenuItem
+                    key={man}
+                    value={man}
+                    onClick={() => {
+                      setSelectedCarManufacturer(man);
+                    }}
+                  >
+                    {man}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
+          </Menu>
+        </Flex>
+        <Flex w={"100%"} flexDirection={"column"} mb={4}>
+          <Heading mb={6}>차량 선택</Heading>
+          <Menu>
+            <MenuButton
+              boxShadow={"base"}
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              fontSize={"xl"}
             >
-              <option key={"benz2"} value={"benz2"}>
-                benz2
-              </option>
-              <option key={"ad"} value={"벤ff츠"}>
-                benz11
-              </option>
-              <option key={"sdfg"} value={"벤asd츠"}>
-                benzasds
-              </option>
-            </Select>
-          </FormControl>
-
-          <FormControl marginY={4}>
-            <FormLabel>사이즈</FormLabel>
-            <Select
-              name="size"
-              {...register("size")}
-              disabled={!modelSelected}
-              onChange={(e) => setValue("size", e.target.value)}
-            >
-              <option key={"qqq"} value={"qqq"}>
-                qqq
-              </option>
-              <option key={"www"} value={"www"}>
-                www
-              </option>
-            </Select>
-          </FormControl>
-          <Button type="submit">Submit</Button>
-        </Box>
-      </form>
-      <DevTool control={control} />
-    </Box>
+              {selectedCar.length === 0 ? "차량을 선택해주세요." : selectedCar}
+            </MenuButton>
+            <MenuList h={"4rem"}>
+              {getCarListFromSelectedManufacturer().map((car) => {
+                return (
+                  <MenuItem
+                    key={car.id}
+                    value={car.carName}
+                    onClick={() => {
+                      setSelectedCar(car.carName);
+                    }}
+                  >
+                    {car.carName}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
+          </Menu>
+        </Flex>
+        <Button
+          mt={4}
+          colorScheme={"green"}
+          onClick={handleClickSearchButton}
+          w={"100%"}
+          h={"40px"}
+        >
+          검색
+        </Button>
+        {isOpen && (
+          <Alert status="error" mt={4}>
+            <AlertIcon />
+            <AlertTitle>제조사를 먼저 선택해주세요!</AlertTitle>
+            <Button onClick={alertClose}>닫기</Button>
+          </Alert>
+        )}
+      </Flex>
+    </Flex>
   );
 };
 

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 export const useScroll = () => {
-  const targetRef = useRef<HTMLDivElement>();
+  const targetRef = useRef<HTMLDivElement>(null);
 
   const scrollToTarget = () => {
     if (targetRef.current) {

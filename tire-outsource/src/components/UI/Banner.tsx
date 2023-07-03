@@ -60,8 +60,8 @@ export type CTAProps = {
   title?: string;
   titleHighlight?: string;
   content?: string;
-  buttonText: string;
-  buttonClickCallback: (...args: any) => void;
+  buttonText?: string;
+  buttonClickCallback?: (...args: any) => void;
 };
 export const CallToActionWithAnnotation = ({
   title,

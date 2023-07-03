@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { ApiApi, Review } from "@/utils/api";
 import {
@@ -19,13 +19,26 @@ const ReviewDetailPage = ({ rating, title, image, content, tire }: Review) => {
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   const router = useRouter();
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    // When the component is unmounted, unsubscribe from the event
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <Flex
       p={4}
       align={"center"}
       justify={"start"}
       h={"auto"}
-      flexFlow={"column"}
+      flexDirection={"column"}
       w={isMobile ? "100%" : "4xl"}
       overflowY="scroll"
       margin={"0 auto"}
@@ -36,6 +49,7 @@ const ReviewDetailPage = ({ rating, title, image, content, tire }: Review) => {
     >
       <Image
         w={"100%"}
+        minH={"300px"}
         src={
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

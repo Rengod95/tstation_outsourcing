@@ -74,19 +74,29 @@ export const StoreListItem = ({
           >
             {description ?? "지점 한줄 소개"}
           </Text>
-          <Flex flexFlow={"row"} flexWrap={"wrap"} w={"100%"} mt={"5%"}>
-            <Center mr={"2%"}>
+          <Flex flexFlow={"row"} flexWrap={"nowrap"} w={"100%"} mt={"5%"}>
+            <Flex mr={"2%"} align={"start"} mt={"2px"}>
               <InfoIcon w={{ base: 7, sm: 6 }} h={{ base: 7, sm: 6 }} />
-            </Center>
-            <Text fontWeight="bold" align={"center"} fontSize="xl">
+            </Flex>
+            <Text
+              fontWeight="bold"
+              align={"center"}
+              fontSize="xl"
+              textAlign={"start"}
+            >
               {address ?? "지점 주소"}
             </Text>
           </Flex>
-          <Flex flexFlow={"row"} flexWrap={"wrap"} w={"100%"} mt={"2%"}>
-            <Center mr={"2%"}>
+          <Flex flexFlow={"row"} flexWrap={"nowrap"} w={"100%"} mt={"2%"}>
+            <Flex mr={"2%"} align={"start"} mt={"2px"}>
               <TimeIcon w={{ base: 7, sm: 6 }} h={{ base: 7, sm: 6 }} />
-            </Center>
-            <Text fontWeight="bold" align={"center"} fontSize="xl">
+            </Flex>
+            <Text
+              fontWeight="bold"
+              align={"center"}
+              fontSize="xl"
+              textAlign={"start"}
+            >
               {operatingHours ?? "지점 운영 시간"}
             </Text>
           </Flex>
