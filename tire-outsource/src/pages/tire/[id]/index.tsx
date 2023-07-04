@@ -16,10 +16,12 @@ import { ApiApi, Tire } from "@/utils/api";
 import React, { useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { calculateDiscountRate } from "@/utils/getDiscountPercent";
+import { formatNumberWithCommas } from "@/utils/formatNumberComma";
 
 const TireDetail = (tire: Tire) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [sizeWatch, setSizeWatch] = useState<string>("");
+
   return (
     <Flex
       flexDirection={"column"}
@@ -45,7 +47,11 @@ const TireDetail = (tire: Tire) => {
           m={"0 auto"}
         >
           <Image
-            src="image_url"
+            src={
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              tire.thumbnailImage as string
+            }
             alt={tire.name}
             boxSize={isMobile ? "280px" : "450px"}
             objectFit="cover"
@@ -55,8 +61,14 @@ const TireDetail = (tire: Tire) => {
             m={"0 auto"}
           />
         </Box>
-        <Box p="5" flexGrow={1} flexShrink={1} m={"0 auto"}>
-          <Heading fontSize="6xl" fontWeight={800} mb="5">
+        <Flex
+          p="5"
+          flexGrow={1}
+          flexShrink={1}
+          justify={"space-around"}
+          flexDirection={"column"}
+        >
+          <Heading fontSize="6xl" fontWeight={800} mt={20}>
             {tire.name}
           </Heading>
           <Text mb="5" fontSize={"2xl"} fontWeight={700}>
@@ -74,11 +86,11 @@ const TireDetail = (tire: Tire) => {
             fontWeight={500}
             textDecoration={"line-through"}
           >
-            정상가 : {tire.marketPrice}
+            정상가 : {formatNumberWithCommas(tire.marketPrice)}₩
           </Text>
           <Flex justify={"flex-start"}>
             <Text mb="5" fontSize={"3xl"} fontWeight={800} mr={4}>
-              할인가 : {tire.salePrice}
+              할인가 : {formatNumberWithCommas(tire.salePrice)}₩
             </Text>
             <Text fontSize={"3xl"} color={"blue"} fontWeight={800}>
               {calculateDiscountRate(tire.marketPrice, tire.salePrice)}%
@@ -143,7 +155,7 @@ const TireDetail = (tire: Tire) => {
               실시간 상담
             </Button>
           </Flex>
-        </Box>
+        </Flex>
       </Flex>
       <Box p="5" mt={isMobile ? "5" : "0"} w={"100%"}>
         <Flex
@@ -172,6 +184,16 @@ const TireDetail = (tire: Tire) => {
         >
           <Image
             src="/detail_default.jpeg"
+            alt="Detail"
+            objectFit="contain"
+            w={"100%"}
+          />
+          <Image
+            src={
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              tire.descriptionImage as string
+            }
             alt="Detail"
             objectFit="contain"
             w={"100%"}

@@ -10,10 +10,10 @@ export const useCreateNewReview = () => {
     mutationKey: ["review", "create"],
     mutationFn: async (review: Review) => {
       const formData = new FormData();
-      formData.append("tire_id", review.tire_id.toString());
+      formData.append("tire_id", review.tireId.toString());
       formData.append("nickname", review.nickname);
       formData.append("password", review.password);
-      formData.append("phone_number", review.phone_number);
+      formData.append("phone_number", review.phoneNumber);
       formData.append("title", review.title);
       formData.append("content", review.content);
       formData.append("rating", review.rating.toString());
@@ -23,12 +23,10 @@ export const useCreateNewReview = () => {
           "https://backend.tirenautomobile.com/api/v1/reviews/",
           {
             method: "POST",
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
             body: formData,
           }
         );
+        console.log(result);
         return result;
       } catch (e) {
         throw new Error("후기글 생성 도중 에러 발생");

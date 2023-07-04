@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Divider, Flex, Heading } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, useMediaQuery } from "@chakra-ui/react";
 import { TireCTA } from "@/components/UI/CTA/TireCTA";
 import { useScroll } from "@/utils/hooks/useScroll";
 import {
@@ -22,6 +22,7 @@ const TirePage = () => {
   const [tireListWithFilter, setTireListWithFilter] = useRecoilState(
     tireListWithFilterState
   );
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   const router = useRouter();
 
@@ -63,7 +64,7 @@ const TirePage = () => {
             p={20}
             h={"100%"}
             flexWrap={"wrap"}
-            justify={"space-around"}
+            justify={isMobile ? "center" : "space-around"}
           >
             {tireListWithFilter.map((tire) => {
               return <TireListItem key={tire.id} tire={tire}></TireListItem>;
@@ -91,7 +92,7 @@ const TirePage = () => {
             gap={{ sm: 4, base: 8, md: 12 }}
             p={20}
             flexWrap={"wrap"}
-            justify={"space-around"}
+            justify={isMobile ? "center" : "space-around"}
           >
             {tireListStatus === "success" &&
               tireList.map((tire) => {

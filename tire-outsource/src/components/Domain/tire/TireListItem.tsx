@@ -14,6 +14,7 @@ import {
 import { Tire } from "@/utils/api";
 import { calculateDiscountRate } from "@/utils/getDiscountPercent";
 import { useRouter } from "next/router";
+import { formatNumberWithCommas } from "@/utils/formatNumberComma";
 
 export type TireListItemProps = {
   tire: Tire;
@@ -26,13 +27,11 @@ const TireListItem = ({ tire }: TireListItemProps) => {
     router.push(`/tire/${tire.id}`);
   };
 
-  console.log(tire);
-  console.log(tire.thumbnail_image);
   return (
-    <Card maxW="sm" p={0} onClick={handleClickCard} boxShadow={"none"}>
+    <Card p={0} onClick={handleClickCard} boxShadow={"none"}>
       <Image
         src={
-          tire?.thumbnail_image ??
+          tire?.thumbnailImage ??
           "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
         }
         alt="Green double couch with wooden legs"
@@ -68,7 +67,7 @@ const TireListItem = ({ tire }: TireListItemProps) => {
               fontWeight={600}
               lineHeight={"22px"}
             >
-              {tire.salePrice}₩
+              {formatNumberWithCommas(tire.salePrice)}₩
             </Text>
           </Flex>
         </Flex>

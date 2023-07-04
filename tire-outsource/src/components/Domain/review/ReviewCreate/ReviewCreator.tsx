@@ -178,13 +178,13 @@ export const ReviewCreator = () => {
                   휴대폰 번호
                 </FormLabel>
                 <Controller
-                  name={"phone_number"}
+                  name={"phoneNumber"}
                   control={control}
                   defaultValue={""}
                   render={({ field }) => {
                     return (
                       <Input
-                        id="phone_number"
+                        id="phoneNumber"
                         minH={"4rem"}
                         fontSize={"2xl"}
                         minLength={11}
@@ -539,13 +539,13 @@ export const ReviewCreator = () => {
                 if (step.step === 2) {
                   console.log({
                     ...inputTotalState,
-                    tire_id: Number(tireId),
+                    tireId: Number(tireId),
                     rating: Number(inputTotalState.rating),
                     image: imageForUpload,
                   });
                   createReview({
                     ...inputTotalState,
-                    tire_id: Number(tireId),
+                    tireId: Number(tireId),
                     rating: Number(inputTotalState.rating),
                     image: imageForUpload,
                   });

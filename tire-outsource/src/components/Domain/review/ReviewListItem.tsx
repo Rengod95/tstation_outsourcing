@@ -52,17 +52,11 @@ const ReviewListItem = ({
           flex="1"
           position="relative"
           alignItems="center"
-          ml={{ lg: "4%", md: "4%", sm: 0 }}
           pl={{ base: 10, xs: 0, sm: 10 }}
         >
-          <Box
-            width={{ base: "100%" }}
-            zIndex="2"
-            marginLeft={{ md: 4, sm: 0 }}
-          >
+          <Box width={{ base: "100%" }} zIndex="2">
             <Image
               borderRadius="lg"
-              ml={isPC ? "4%" : 0}
               maxH={"sm"}
               minH={"sm"}
               src={

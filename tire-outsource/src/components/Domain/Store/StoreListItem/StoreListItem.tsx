@@ -5,7 +5,6 @@ import {
   Link,
   Image,
   Text,
-  Center,
   useColorModeValue,
   Container,
   Flex,

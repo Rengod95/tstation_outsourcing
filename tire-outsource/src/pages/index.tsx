@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
 import { CaptionCarousel } from "@/components/UI/Carousel/Carousel";
-import { Box, Divider, Flex, Heading } from "@chakra-ui/react";
+import { Box, Divider, Flex, Heading, useMediaQuery } from "@chakra-ui/react";
 import TireListItem from "@/components/Domain/tire/TireListItem";
 import React from "react";
 import { useGetTireList } from "@/components/Domain/tire/tire.hooks";
@@ -10,6 +10,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { data: tireList, status: tireListStatus } = useGetTireList();
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
+
   return (
     <Box>
       <Head>
@@ -36,7 +38,7 @@ export default function Home() {
           gap={{ sm: 4, base: 8, md: 12 }}
           p={20}
           flexWrap={"wrap"}
-          justify={"space-between"}
+          justify={isMobile ? "center" : "space-around"}
           maxW={"1024px"}
           m={"0 auto"}
         >

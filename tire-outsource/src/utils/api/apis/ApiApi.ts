@@ -136,6 +136,39 @@ export class ApiApi extends runtime.BaseAPI {
   /**
    *
    */
+  async listListTireSizesRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<any>>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/v1/tire-sizes/`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse<any>(response);
+  }
+
+  /**
+   *
+   */
+  async listListTireSizes(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<any>> {
+    const response = await this.listListTireSizesRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   *
+   */
   async listReviewsRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<Review>>> {

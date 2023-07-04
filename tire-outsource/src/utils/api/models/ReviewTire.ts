@@ -76,6 +76,18 @@ export interface ReviewTire {
     salePrice: number;
     /**
      * 
+     * @type {Blob}
+     * @memberof ReviewTire
+     */
+    thumbnailImage?: Blob;
+    /**
+     * 
+     * @type {Blob}
+     * @memberof ReviewTire
+     */
+    descriptionImage?: Blob;
+    /**
+     * 
      * @type {Array<TireSizesInner>}
      * @memberof ReviewTire
      */
@@ -85,7 +97,7 @@ export interface ReviewTire {
      * @type {string}
      * @memberof ReviewTire
      */
-    smartstoreUrl: string;
+    smartstoreUrl?: string;
     /**
      * 
      * @type {Date}
@@ -112,7 +124,6 @@ export function instanceOfReviewTire(value: object): boolean {
     isInstance = isInstance && "marketPrice" in value;
     isInstance = isInstance && "salePrice" in value;
     isInstance = isInstance && "sizes" in value;
-    isInstance = isInstance && "smartstoreUrl" in value;
 
     return isInstance;
 }
@@ -134,8 +145,10 @@ export function ReviewTireFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'modelName': json['model_name'],
         'marketPrice': json['market_price'],
         'salePrice': json['sale_price'],
+        'thumbnailImage': !exists(json, 'thumbnail_image') ? undefined : json['thumbnail_image'],
+        'descriptionImage': !exists(json, 'description_image') ? undefined : json['description_image'],
         'sizes': ((json['sizes'] as Array<any>).map(TireSizesInnerFromJSON)),
-        'smartstoreUrl': json['smartstore_url'],
+        'smartstoreUrl': !exists(json, 'smartstore_url') ? undefined : json['smartstore_url'],
         'created': !exists(json, 'created') ? undefined : (new Date(json['created'])),
         'modified': !exists(json, 'modified') ? undefined : (new Date(json['modified'])),
     };
@@ -156,6 +169,8 @@ export function ReviewTireToJSON(value?: ReviewTire | null): any {
         'model_name': value.modelName,
         'market_price': value.marketPrice,
         'sale_price': value.salePrice,
+        'thumbnail_image': value.thumbnailImage,
+        'description_image': value.descriptionImage,
         'sizes': ((value.sizes as Array<any>).map(TireSizesInnerToJSON)),
         'smartstore_url': value.smartstoreUrl,
     };
