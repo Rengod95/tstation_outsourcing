@@ -81,9 +81,8 @@ const ReviewListPage = () => {
   return (
     <Box>
       <ReviewCTA
-        title={"다양한 제품에 대한 장착후기를 만나보세요!"}
-        titleHighlight={"타이어"}
-        content={"내용 테스트내용 테스트내용 테스트내용 테스트내용 테스트"}
+        title={"다양한 타이어 장착 후기를 만나보세요.\n"}
+        titleHighlight={"고객님들이 작성하신 생생한 후기"}
         buttonClickCallback={scrollToTarget}
         buttonText={"장착 후기 살펴보기"}
       />

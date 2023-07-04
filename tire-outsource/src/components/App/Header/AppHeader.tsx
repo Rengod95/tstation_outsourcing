@@ -41,7 +41,7 @@ export const HEADER_PATH: HPath[] = [
     path: "/review",
   },
   {
-    name: "내 주변 지점",
+    name: "장착점 소개",
     path: "/store",
   },
 ];
@@ -52,7 +52,7 @@ export const HeaderLogo = () => {
     <Center
       as={"section"}
       flexGrow={1}
-      minW={"7rem"}
+      minW={"5rem"}
       maxW={"23rem"}
       mr={"2rem"}
       p={4}
@@ -65,7 +65,7 @@ export const HeaderLogo = () => {
         src={"/logo.png"}
         alt={"logo"}
         w={"100%"}
-        maxH={"7rem"}
+        maxH={"6rem"}
         objectFit={"contain"}
       />
     </Center>
@@ -78,7 +78,7 @@ export const HeaderSearchBar = () => {
     <>
       {!isHidden ? (
         <Center flexGrow={2} mr={"2rem"} h={"4rem"}>
-          <SearchBar />
+          {/*<SearchBar />*/}
         </Center>
       ) : (
         <div></div>
@@ -180,7 +180,7 @@ export const HeaderMenuDrawer = ({
             fontSize={"2xl"}
             color={"black"}
           >
-            지점 찾기
+            장착점 소개
           </Button>
           <Divider />
         </DrawerBody>
@@ -251,7 +251,7 @@ export const AppHeader = () => {
       as={"header"}
       top={0}
       zIndex={10}
-      h={"6.2rem"}
+      minH={"9rem"}
       w={"100%"}
       position={"sticky"}
     >
@@ -259,7 +259,7 @@ export const AppHeader = () => {
         w={"100%"}
         bgColor={"white"}
         boxShadow={"lg"}
-        minH={"6.2rem"}
+        minH={"9rem"}
         flexDir={"row"}
         pr={"2.2rem"}
         pl={"2.2rem"}

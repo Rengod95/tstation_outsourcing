@@ -5,54 +5,178 @@ import {
   Text,
   Button,
   useBreakpointValue,
+  Heading,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Menu,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { ApiApi, Tire } from "@/utils/api";
+import React, { useState } from "react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { calculateDiscountRate } from "@/utils/getDiscountPercent";
 
 const TireDetail = (tire: Tire) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-
+  const [sizeWatch, setSizeWatch] = useState<string>("");
   return (
     <Flex
-      direction={isMobile ? "column" : "row"}
+      flexDirection={"column"}
       justify="center"
       align="center"
+      width={"100%"}
+      maxW={"1024px"}
+      boxShadow={"md"}
+      margin={"0 auto"}
+      bgColor={"white"}
     >
-      <Box p="5">
-        <Image
-          src="image_url"
-          alt={tire.name}
-          boxSize="300px"
-          objectFit="cover"
-        />
-      </Box>
-      <Box p="5">
-        <Text fontSize="2xl" mb="5">
-          {tire.name}
-        </Text>
-        <Text mb="5">{tire.description}</Text>
-        <Text mb="5">Manufacturer: {tire.manufacturer.name}</Text>
-        <Text mb="5">Model: {tire.modelName}</Text>
-        <Text mb="5">Market Price: {tire.marketPrice}</Text>
-        <Text mb="5">Sale Price: {tire.salePrice}</Text>
-        <Text mb="5">
-          Sizes: {tire.sizes.map((size) => size.tireSize).join(", ")}
-        </Text>
-        <Button colorScheme="teal" size="md">
-          Buy Now
-        </Button>
-      </Box>
-      <Box p="5" mt={isMobile ? "5" : "0"}>
-        <Text fontSize="2xl" mb="5">
-          Detailed Description
-        </Text>
-        {/* 여기에 상세 설명 이미지를 넣어주세요 */}
-        <Image
-          src="detail_image_url"
-          alt="Detail"
-          boxSize="300px"
-          objectFit="cover"
-        />
+      <Flex
+        flexDirection={isMobile ? "column" : "row"}
+        justify={"center"}
+        width={"100%"}
+        boxShadow={"md"}
+      >
+        <Box
+          p="5"
+          flexGrow={0}
+          flexShrink={1}
+          justifyContent={"center"}
+          m={"0 auto"}
+        >
+          <Image
+            src="image_url"
+            alt={tire.name}
+            boxSize={isMobile ? "280px" : "450px"}
+            objectFit="cover"
+            boxShadow={"inner"}
+            bgColor={"gray.100"}
+            borderRadius={"md"}
+            m={"0 auto"}
+          />
+        </Box>
+        <Box p="5" flexGrow={1} flexShrink={1} m={"0 auto"}>
+          <Heading fontSize="6xl" fontWeight={800} mb="5">
+            {tire.name}
+          </Heading>
+          <Text mb="5" fontSize={"2xl"} fontWeight={700}>
+            {tire.description}
+          </Text>
+          <Text mb="2" fontSize={"2xl"} fontWeight={600}>
+            제조사 : {tire.manufacturer.name}
+          </Text>
+          <Text mb="2" fontSize={"2xl"} fontWeight={600}>
+            모델명 : {tire.modelName}
+          </Text>
+          <Text
+            mb="2"
+            fontSize={"2xl"}
+            fontWeight={500}
+            textDecoration={"line-through"}
+          >
+            정상가 : {tire.marketPrice}
+          </Text>
+          <Flex justify={"flex-start"}>
+            <Text mb="5" fontSize={"3xl"} fontWeight={800} mr={4}>
+              할인가 : {tire.salePrice}
+            </Text>
+            <Text fontSize={"3xl"} color={"blue"} fontWeight={800}>
+              {calculateDiscountRate(tire.marketPrice, tire.salePrice)}%
+            </Text>
+          </Flex>
+
+          <Text mb="5">
+            <Flex w={"100%"}>
+              <Menu size={"xl"}>
+                <MenuButton
+                  boxShadow={"base"}
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  fontSize={"xl"}
+                >
+                  {sizeWatch.length === 0 ? "사이즈를 선택해주세요" : sizeWatch}
+                </MenuButton>
+                <MenuList
+                  h={"10rem"}
+                  overflowY={"scroll"}
+                  minH={"10rem"}
+                  w={"100%"}
+                >
+                  {tire.sizes.map((size) => {
+                    return (
+                      <MenuItem
+                        w={"100%"}
+                        key={size.tireSize}
+                        value={size.tireSize}
+                        onClick={() => {
+                          setSizeWatch(size.tireSize);
+                        }}
+                      >
+                        {size.tireSize}
+                      </MenuItem>
+                    );
+                  })}
+                </MenuList>
+              </Menu>
+            </Flex>
+          </Text>
+          <Flex>
+            <Button
+              colorScheme="teal"
+              size="md"
+              mr={4}
+              w={"100%"}
+              boxShadow={"md"}
+              minH={"4rem"}
+              fontSize={"2xl"}
+            >
+              구매하기
+            </Button>
+            <Button
+              colorScheme="teal"
+              size="md"
+              w={"100%"}
+              boxShadow={"md"}
+              minH={"4rem"}
+              fontSize={"2xl"}
+            >
+              실시간 상담
+            </Button>
+          </Flex>
+        </Box>
+      </Flex>
+      <Box p="5" mt={isMobile ? "5" : "0"} w={"100%"}>
+        <Flex
+          minH={"4rem"}
+          bgColor={"gray.100"}
+          justify={"flex-start"}
+          w={"100%"}
+        >
+          <Button
+            w={"12rem"}
+            h={"4rem"}
+            bgColor={"white"}
+            color={"black"}
+            fontSize={"2xl"}
+            border={"0.5px solid gray"}
+          >
+            상세 설명
+          </Button>
+        </Flex>
+        <Box
+          w={"100%"}
+          mt={4}
+          bgColor={"gray.100"}
+          borderRadius={"lg"}
+          h={"auto"}
+        >
+          <Image
+            src="/detail_default.jpeg"
+            alt="Detail"
+            objectFit="contain"
+            w={"100%"}
+          />
+        </Box>
       </Box>
     </Flex>
   );

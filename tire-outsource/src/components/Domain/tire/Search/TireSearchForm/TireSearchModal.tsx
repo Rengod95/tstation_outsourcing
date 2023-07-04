@@ -42,7 +42,7 @@ export type TiresSearchModalProps = {
 };
 
 export type SearchType = "size" | "car" | "manufacturer";
-export const TireSearchModal = ({ isOpen, onClose }: TiresSearchModalProps) => {
+export const TireSearchModal = () => {
   const [category, setCategory] = useState<SearchType>("car");
   const [categoryIsSelected, setCategoryIsSelected] = useState<boolean>(false);
 
@@ -50,83 +50,73 @@ export const TireSearchModal = ({ isOpen, onClose }: TiresSearchModalProps) => {
 
   const handleModalClose = () => {
     setCategoryIsSelected(false);
-    onClose();
   };
-  return (
-    <Modal isOpen={isOpen} onClose={handleModalClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          <Flex justify={"end"} h={"100%"} w={"100%"} align={"center"}>
-            <Button
-              minH={"1rem"}
-              bgColor={"white"}
-              onClick={handleModalClose}
-              w={"1.5rem"}
-              h={"100%"}
-              p={0}
-              display={"flex"}
-            >
-              <CloseIcon w={"2rem"} h={"2rem"} color={"black"} />
-            </Button>
-          </Flex>
-        </ModalHeader>
-        <ModalBody>
-          <Heading mb={6}>검색 종류 선택</Heading>
-          <Divider color={"gray.400"} />
 
-          <Flex minH={"2rem"} p={6} justify={"space-around"}>
-            <ButtonGroup>
-              <Button
-                colorScheme={"green"}
-                onClick={() => {
-                  setCategoryIsSelected(true);
-                  setCategory("car");
-                }}
-              >
-                호환 차종
-              </Button>
-              <Button
-                colorScheme={"green"}
-                onClick={() => {
-                  setCategoryIsSelected(true);
-                  setCategory("size");
-                }}
-              >
-                타이어 사이즈
-              </Button>
-              <Button
-                colorScheme={"green"}
-                onClick={() => {
-                  setCategoryIsSelected(true);
-                  setCategory("manufacturer");
-                }}
-              >
-                타이어 제조사
-              </Button>
-            </ButtonGroup>
-          </Flex>
-          <Divider color={"gray.400"} />
-          {categoryIsSelected && category === "car" && (
-            <TireSearchForm onClose={handleModalClose} />
-          )}
-          {categoryIsSelected && category === "size" && (
-            <TireSizeSearch onClose={handleModalClose} />
-          )}
-          {categoryIsSelected && category === "manufacturer" && (
-            <TireManufacturerSearch onClose={handleModalClose} />
-          )}
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+  return (
+    <Flex
+      w={"100%"}
+      flexDirection={"column"}
+      align={"center"}
+      justify={"center"}
+    >
+      <Flex
+        minH={"2rem"}
+        w={"100%"}
+        justify={"space-around"}
+        flexDirection={"column"}
+      >
+        <Heading mb={6} textAlign={"center"}>
+          검색 종류 선택
+        </Heading>
+        <Divider color={"gray.400"} />
+        <ButtonGroup>
+          <Button
+            fontSize={"2xl"}
+            p={8}
+            w={"100%"}
+            colorScheme={"green"}
+            onClick={() => {
+              setCategoryIsSelected(true);
+              setCategory("car");
+            }}
+          >
+            호환 차종
+          </Button>
+          <Button
+            fontSize={"2xl"}
+            p={8}
+            w={"100%"}
+            colorScheme={"green"}
+            onClick={() => {
+              setCategoryIsSelected(true);
+              setCategory("size");
+            }}
+          >
+            타이어 사이즈
+          </Button>
+          <Button
+            fontSize={"2xl"}
+            p={8}
+            w={"100%"}
+            colorScheme={"green"}
+            onClick={() => {
+              setCategoryIsSelected(true);
+              setCategory("manufacturer");
+            }}
+          >
+            타이어 제조사
+          </Button>
+        </ButtonGroup>
+        {categoryIsSelected && category === "size" && <TireSizeSearch />}
+        {categoryIsSelected && category === "manufacturer" && (
+          <TireManufacturerSearch />
+        )}
+      </Flex>
+    </Flex>
   );
 };
 
-export const TireSizeSearch = ({
-  onClose,
-}: {
-  onClose: (...args: any) => void;
-}) => {
+export const TireSizeSearch = () => {
   const { data } = useGetTireList();
   const res: string[] = [];
   data?.forEach((tire) =>
@@ -154,8 +144,6 @@ export const TireSizeSearch = ({
           )
         );
       }
-
-      onClose();
     }
   };
 
@@ -179,10 +167,16 @@ export const TireSizeSearch = ({
             >
               {sizeWatch.length === 0 ? "사이즈를 선택해주세요" : sizeWatch}
             </MenuButton>
-            <MenuList h={"4rem"}>
+            <MenuList
+              h={"10rem"}
+              overflowY={"scroll"}
+              minH={"10rem"}
+              w={"100%"}
+            >
               {tireSizeList.map((size) => {
                 return (
                   <MenuItem
+                    w={"100%"}
                     key={size}
                     value={size}
                     onClick={() => {
@@ -217,11 +211,7 @@ export const TireSizeSearch = ({
   );
 };
 
-export const TireManufacturerSearch = ({
-  onClose,
-}: {
-  onClose: (...args: any) => void;
-}) => {
+export const TireManufacturerSearch = () => {
   const { data } = useGetTireList();
   const setFilter = useSetRecoilState(tireListWithFilterState);
   const { isOpen, onClose: alertClose, onOpen: alertOpen } = useDisclosure();
@@ -239,14 +229,13 @@ export const TireManufacturerSearch = ({
       if (data) {
         setFilter(data.filter((tire) => tire.manufacturer.name === manWatch));
       }
-
-      onClose();
     }
   };
 
   return (
-    <Flex p={4}>
+    <Flex p={4} h={"100%"}>
       <Flex
+        h={"100%"}
         flexDirection={"column"}
         justify={"start"}
         align={"center"}

@@ -59,8 +59,8 @@ const ReviewDetailPage = ({ rating, title, image, content, tire }: Review) => {
       />
 
       <Flex mt={5} align="center">
-        <Heading fontSize="6xl" fontWeight="700" mr={1}>
-          {title}ㅁㄴㅇㅁㄴㅇㅁㅇㅁㄴㅇㄴㅁㅇㅁㄴㅇㅁㄴ
+        <Heading fontSize="4xl" fontWeight="700" mr={1}>
+          {title}
         </Heading>
       </Flex>
       <Text mt={4} fontSize={"xl"} ml={1} mb={8}>

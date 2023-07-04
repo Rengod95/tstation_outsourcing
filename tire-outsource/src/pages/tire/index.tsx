@@ -40,7 +40,9 @@ const TirePage = () => {
 
   return (
     <Box>
-      <TireCTA />
+      <Box bgColor={"gray"} w={"100%"} boxShadow={"md"}>
+        <TireCTA />
+      </Box>
       {tireListWithFilter.length !== 0 && (
         <>
           <Flex
@@ -72,8 +74,14 @@ const TirePage = () => {
       )}
       {tireListWithFilter.length === 0 && (
         <>
-          <Flex h={"xs"} ref={targetRef} align={"center"} flexFlow={"column"}>
-            <Flex mt={12}>
+          <Flex h={"xs"} align={"center"} flexFlow={"column"} mt={10}>
+            <Flex
+              mt={12}
+              h={"100%"}
+              w={"100%"}
+              justify={"center"}
+              align={"center"}
+            >
               <Heading size={"4xl"}>타이어 목록</Heading>
             </Flex>
           </Flex>

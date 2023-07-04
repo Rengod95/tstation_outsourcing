@@ -7,6 +7,8 @@ import { useGetStoreList } from "@/components/Domain/Store/StoreListPage.hooks";
 import ReviewListItem from "@/components/Domain/review/ReviewListItem";
 import { ReviewSearchBar } from "@/components/Domain/review/ReviewSearchBar";
 import { useRouter } from "next/router";
+import Script from "next/script";
+import Head from "next/head";
 
 const StorePage = () => {
   const { targetRef, scrollToTarget } = useScroll();
@@ -53,28 +55,37 @@ const StorePage = () => {
   };
 
   return (
-    <Box>
-      <CallToActionWithAnnotation
-        content={"내용 테스트내용 테스트내용 테스트내용 테스트내용 테스트"}
-        buttonText={"지점 찾으러 가기"}
-        buttonClickCallback={scrollToTarget}
-      />
-      <Flex
-        h={"xs"}
-        ref={targetRef}
-        align={"center"}
-        flexFlow={"column"}
-        justify={"center"}
-      >
-        <Flex mt={12}>
-          <Heading size={"4xl"}>내 주변 지점 목록</Heading>
+    <>
+      {/* eslint-disable-next-line @next/next/no-script-component-in-head */}
+      <Head>
+        <Script
+          type="text/javascript"
+          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4291dcb2d439a4b95453c1350fbca094"
+        />
+      </Head>
+      <Box>
+        <CallToActionWithAnnotation
+          content={"내용 테스트내용 테스트내용 테스트내용 테스트내용 테스트"}
+          buttonText={"지점 찾으러 가기"}
+          buttonClickCallback={scrollToTarget}
+        />
+        <Flex
+          h={"xs"}
+          ref={targetRef}
+          align={"center"}
+          flexFlow={"column"}
+          justify={"center"}
+        >
+          <Flex mt={12}>
+            <Heading size={"4xl"}>장착점 소개</Heading>
+          </Flex>
         </Flex>
-      </Flex>
-      <Divider orientation="horizontal" />
-      <Flex flexFlow={"column"}>
-        <RenderedStoreList />
-      </Flex>
-    </Box>
+        <Divider orientation="horizontal" />
+        <Flex flexFlow={"column"}>
+          <RenderedStoreList />
+        </Flex>
+      </Box>
+    </>
   );
 };
 

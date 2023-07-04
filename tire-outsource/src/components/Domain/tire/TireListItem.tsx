@@ -26,13 +26,20 @@ const TireListItem = ({ tire }: TireListItemProps) => {
     router.push(`/tire/${tire.id}`);
   };
 
+  console.log(tire);
+  console.log(tire.thumbnail_image);
   return (
     <Card maxW="sm" p={0} onClick={handleClickCard} boxShadow={"none"}>
       <Image
-        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        src={
+          tire?.thumbnail_image ??
+          "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        }
         alt="Green double couch with wooden legs"
         borderRadius="lg"
         objectFit="cover"
+        h={"240px"}
+        w={"240px"}
       />
       <CardBody p={2}>
         <Stack spacing="1" mt={2}>

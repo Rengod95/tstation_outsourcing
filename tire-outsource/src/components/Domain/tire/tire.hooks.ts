@@ -19,6 +19,7 @@ export const useGetTireList = () => {
     queryFn: async () => {
       const api = new ApiApi();
       const result = await api.listTires();
+      console.log(result);
       return result;
     },
     onSuccess: (data) => {

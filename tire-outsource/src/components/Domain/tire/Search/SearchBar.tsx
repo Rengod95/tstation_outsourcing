@@ -38,13 +38,6 @@ export const SearchBar = () => {
           <Search2Icon color="gray.500" w={"1.5rem"} h={"1.5rem"} />
         </InputRightElement>
       </InputGroup>
-      <TireSearchModal
-        isOpen={isOpen}
-        onClose={() => {
-          setIsInteracting((prev) => !prev);
-          closeModal();
-        }}
-      />
     </Box>
   );
 };

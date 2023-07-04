@@ -29,7 +29,7 @@ const Layout = ({ children }: LayoutProps) => {
       </Box>
       {/* Footer */}
       <Box as="footer" bg="gray.200" p={4} textAlign="center">
-        <p>© 2023 My Website. All rights reserved.</p>
+        <p>© 2023 TireN. All rights reserved.</p>
       </Box>
     </>
   );

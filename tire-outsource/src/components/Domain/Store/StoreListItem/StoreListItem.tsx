@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
@@ -10,9 +10,19 @@ import {
   Container,
   Flex,
   Button,
+  ModalOverlay,
+  Modal,
+  ModalContent,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { InfoIcon, TimeIcon } from "@chakra-ui/icons";
 import { Store } from "@/utils/api";
+import { MapMarker, Map } from "react-kakao-maps-sdk";
 
 export const StoreListItem = ({
   name,
@@ -22,6 +32,8 @@ export const StoreListItem = ({
   city,
   operatingHours,
 }: Store) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
   return (
     <Container maxW={"7xl"} p="12" minH={"30rem"}>
       <Box
@@ -60,7 +72,7 @@ export const StoreListItem = ({
             <Link
               textDecoration="none"
               _hover={{ textDecoration: "none" }}
-              fontSize={"5xl"}
+              fontSize={isMobile ? "4xl" : "5xl"}
             >
               {name ?? "지점 이름"}
             </Link>
@@ -69,8 +81,9 @@ export const StoreListItem = ({
             as="p"
             marginTop="1%"
             color={useColorModeValue("gray.700", "gray.200")}
-            fontSize="xl"
-            fontWeight={"500"}
+            fontSize="2xl"
+            ml={"1px"}
+            fontWeight={"600"}
           >
             {description ?? "지점 한줄 소개"}
           </Text>
@@ -108,11 +121,146 @@ export const StoreListItem = ({
             fontSize={"2xl"}
             color={"white"}
             boxShadow={"base"}
+            onClick={onOpen}
           >
             지도 정보 확인
           </Button>
+          <MapModal
+            address={address}
+            isOpen={isOpen}
+            onClose={onClose}
+          ></MapModal>
         </Box>
       </Box>
     </Container>
+  );
+};
+
+export const MapModal = ({
+  address,
+  isOpen,
+  onClose,
+}: {
+  address: string;
+  isOpen: boolean;
+  onClose: (...args: any) => void;
+}) => {
+  return (
+    <Box>
+      <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontSize={"4xl"} fontWeight={800}>
+            {address}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <MapByKeyword address={address} />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="green"
+              mr={3}
+              onClick={onClose}
+              fontSize={"2xl"}
+              fontWeight={800}
+              w={"100%"}
+              h={"5.5rem"}
+            >
+              닫기
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Box>
+  );
+};
+
+export const MapByKeyword = ({ address }: { address: string }) => {
+  const [info, setInfo] = useState();
+  const [markers, setMarkers] = useState([]);
+  const [map, setMap] = useState();
+
+  useEffect(() => {
+    if (!map) return;
+    const ps = new kakao.maps.services.Places();
+
+    ps.keywordSearch(address, (data, status, _pagination) => {
+      if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        const bounds = new kakao.maps.LatLngBounds();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const markers = [];
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        for (let i = 0; i < data.length; i++) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          markers.push({
+            position: {
+              lat: data[i].y,
+              lng: data[i].x,
+            },
+            content: data[i].place_name,
+          });
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setMarkers(markers);
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        map.setBounds(bounds);
+      }
+    });
+  }, [map]);
+
+  return (
+    <Map // 로드뷰를 표시할 Container
+      center={{
+        lat: 37.566826,
+        lng: 126.9786567,
+      }}
+      style={{
+        width: "100%",
+        height: "350px",
+      }}
+      level={3}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      onCreate={setMap}
+    >
+      {markers.map((marker) => (
+        <MapMarker
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          position={marker.position}
+          onClick={() => setInfo(marker)}
+        >
+          {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            info && info.content === marker.content && (
+              <div style={{ color: "#000" }}>
+                {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  marker.content
+                }
+              </div>
+            )
+          }
+        </MapMarker>
+      ))}
+    </Map>
   );
 };

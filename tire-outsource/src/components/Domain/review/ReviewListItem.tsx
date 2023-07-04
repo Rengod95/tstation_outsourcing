@@ -87,7 +87,7 @@ const ReviewListItem = ({
         >
           <Heading
             _hover={{ textDecoration: "none" }}
-            fontSize={"5xl"}
+            fontSize={isPC ? "5xl" : "3xl"}
             textDecoration="none"
           >
             {title ?? "후기글 제목"}

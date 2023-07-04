@@ -6,6 +6,7 @@ import {
   Flex,
   useMediaQuery,
   Img,
+  Divider,
 } from "@chakra-ui/react";
 import Slider, { Settings } from "react-slick";
 
@@ -27,9 +28,9 @@ export const CaptionCarousel = () => {
   const top = useBreakpointValue({ base: "90%", md: "50%" });
   const bottom = useBreakpointValue({ base: "10%", md: "10%" });
   const side = useBreakpointValue({ base: "30%", md: "40px" });
-  const [isMobile] = useMediaQuery("(max-width:768px)");
+  const [isPC] = useMediaQuery("(min-width: 768px)");
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(1);
   const totalSlides = cards.length;
 
   const settings: Settings = {
@@ -49,9 +50,13 @@ export const CaptionCarousel = () => {
   return (
     <Box
       position={"relative"}
-      height={isMobile ? "260px" : "600px"}
-      width={"full"}
+      width={"100%"}
+      h={isPC ? "400px" : "200px"}
+      maxW={"1024px"}
       overflow={"hidden"}
+      m={"0 auto"}
+      bgColor={"gray.100"}
+      border={"base"}
     >
       <link
         rel="stylesheet"
@@ -72,11 +77,12 @@ export const CaptionCarousel = () => {
             src={card.image}
             alt={"logo"}
             w={"100%"}
-            h={isMobile ? "260px" : "600px"}
+            h={isPC ? "400px" : "200px"}
             objectFit={"fill"}
           ></Img>
         ))}
       </Slider>
+      <Divider />
       <Flex
         bottom={"7%"}
         w={"100%"}

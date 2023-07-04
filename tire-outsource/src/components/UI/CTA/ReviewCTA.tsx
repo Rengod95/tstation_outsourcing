@@ -7,6 +7,7 @@ import {
   Heading,
   Stack,
   Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import Head from "next/head";
 
@@ -21,7 +22,7 @@ export const ReviewCTA = ({
   buttonClickCallback,
 }: CTAProps) => {
   const router = useRouter();
-
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
   const handleForwardReviewCreate = () => {
     // 특정 경로로 이동
     router.push("/review/create");
@@ -31,7 +32,11 @@ export const ReviewCTA = ({
     <Flex
       bgColor={"gray.100"}
       h={{ base: "5xl", md: "5xl", sm: "5xl" }}
-      align={"center"}
+      align={isMobile ? "space-around" : "center"}
+      bgImage={"url(/review_banner.jpeg)"}
+      bgPosition="center"
+      bgRepeat="no-repeat"
+      bgSize="cover"
     >
       <Head>
         <link
@@ -40,31 +45,36 @@ export const ReviewCTA = ({
         />
       </Head>
 
-      <Container maxW={"5xl"}>
+      <Container maxW={"7xl"} mt={isMobile ? 200 : 0}>
         <Stack
           as={Box}
+          w={"100%"}
           textAlign={"center"}
-          spacing={{ base: 10, md: 15, sm: 10 }}
-          p={{ base: 10, md: 10 }}
+          spacing={{ base: 2, md: 15, sm: 10 }}
         >
           <Heading
-            fontWeight={600}
-            fontSize={{ base: "6xl", sm: "6xl", md: "7xl" }}
+            fontWeight={700}
+            fontSize={isMobile ? "4xl" : "5xl"}
             lineHeight={"110%"}
             w={"100%"}
           >
-            {title ?? "기본 제목기본 제목기본 제목"} <br />
-            <Text as={"span"} color={"green.400"} fontSize={"5xl"}>
-              {titleHighlight ?? "기본 하이라이트"}
-            </Text>
+            {title ?? ""} <br />
           </Heading>
+          <Text
+            as={"span"}
+            color={"green.400"}
+            w={"100%"}
+            fontWeight={700}
+            fontSize={isMobile ? "4xl" : "5xl"}
+          >
+            {titleHighlight ?? "기본 하이라이트"}
+          </Text>
           <Text
             color={"gray.500"}
             fontSize={{ base: "2xl", sm: "2xl", md: "2xl" }}
             w={"100%"}
           >
-            {content ??
-              "기본 부연설명 공간기본 부연설명 공간기본 부연설명 공간기본 부연설명 공간"}
+            {content ?? ""}
           </Text>
           <Flex
             direction={"row"}

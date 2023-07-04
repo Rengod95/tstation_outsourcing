@@ -13,6 +13,7 @@ import {
   Icon,
   useColorModeValue,
   createIcon,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import Head from "next/head";
 
@@ -70,11 +71,15 @@ export const CallToActionWithAnnotation = ({
   buttonText,
   buttonClickCallback,
 }: CTAProps) => {
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
   return (
     <Flex
-      bgColor={"gray.100"}
       h={{ base: "5xl", md: "5xl", sm: "5xl" }}
       align={"center"}
+      bgImage={"url(/store_banner.png)"}
+      bgPosition="center"
+      bgRepeat="no-repeat"
+      bgSize="cover"
     >
       <Head>
         <link
@@ -83,32 +88,30 @@ export const CallToActionWithAnnotation = ({
         />
       </Head>
 
-      <Container maxW={"5xl"}>
+      <Container maxW={"6xl"}>
         <Stack
           as={Box}
           textAlign={"center"}
-          spacing={{ base: 10, md: 15, sm: 10 }}
-          p={{ base: 10, md: 10 }}
+          spacing={{ base: 2, md: 15, sm: 10 }}
         >
           <Heading
-            fontWeight={600}
-            fontSize={{ base: "6xl", sm: "6xl", md: "7xl" }}
+            fontWeight={700}
+            fontSize={isMobile ? "4xl" : "5xl"}
             lineHeight={"110%"}
             w={"100%"}
           >
-            {title ?? "기본 제목기본 제목기본 제목"} <br />
-            <Text as={"span"} color={"green.400"} fontSize={"5xl"}>
-              {titleHighlight ?? "기본 하이라이트"}
-            </Text>
+            {title ?? "당신을 위한 완벽한 타이어 파트너"} <br />
           </Heading>
           <Text
-            color={"gray.500"}
-            fontSize={{ base: "2xl", sm: "2xl", md: "2xl" }}
-            w={"100%"}
+            as={"span"}
+            color={"green.400"}
+            fontWeight={700}
+            fontSize={isMobile ? "4xl" : "5xl"}
           >
-            {content ??
-              "기본 부연설명 공간기본 부연설명 공간기본 부연설명 공간기본 부연설명 공간"}
+            {titleHighlight ??
+              "최고의 장비와 서비스로 유명한 장착점을 모았습니다. "}
           </Text>
+
           <Stack
             direction={"column"}
             spacing={3}

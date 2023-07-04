@@ -32,7 +32,7 @@ import {
 import { Car, TireManufacturer } from "@/utils/api";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
-const TireSearchForm = ({ onClose }: { onClose: (...args: any) => void }) => {
+const TireSearchForm = () => {
   const { data: tireListData } = useGetTireList();
   const { data: carListData } = useGetCarList();
   const [selectedCarManufacturer, setSelectedCarManufacturer] =
@@ -67,13 +67,11 @@ const TireSearchForm = ({ onClose }: { onClose: (...args: any) => void }) => {
           )
         );
       }
-
-      onClose();
     }
   };
 
   return (
-    <Flex p={4}>
+    <Flex p={4} zIndex={0}>
       <Flex
         flexDirection={"column"}
         justify={"start"}

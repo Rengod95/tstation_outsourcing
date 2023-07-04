@@ -1,15 +1,31 @@
 import { CTAProps } from "@/components/UI/Banner";
-import { Box, Container, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Stack,
+  Text,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import React from "react";
 import SearchBar from "@/components/Domain/tire/Search/SearchBar";
+import TireSearchModal from "@/components/Domain/tire/Search/TireSearchForm/TireSearchModal";
 
 export const TireCTA = ({ title, titleHighlight, content }: CTAProps) => {
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
   return (
     <Flex
       bgColor={"gray.100"}
-      h={{ base: "3xl", md: "3xl", sm: "3xl" }}
+      h={"auto"}
+      minH={"5xl"}
       align={"center"}
+      p={{ base: 10, md: 10 }}
+      bgImage={"url(/tire_banner.jpeg)"}
+      bgPosition="center"
+      bgRepeat="no-repeat"
+      bgSize="cover"
     >
       <Head>
         <link
@@ -18,31 +34,28 @@ export const TireCTA = ({ title, titleHighlight, content }: CTAProps) => {
         />
       </Head>
 
-      <Container maxW={"5xl"}>
+      <Container maxW={"6xl"}>
         <Stack
           as={Box}
           textAlign={"center"}
-          spacing={{ base: 10, md: 15, sm: 10 }}
-          p={{ base: 10, md: 10 }}
+          spacing={{ base: 2, md: 15, sm: 10 }}
         >
           <Heading
-            fontWeight={600}
-            fontSize={{ base: "6xl", sm: "6xl", md: "7xl" }}
+            fontWeight={700}
+            fontSize={isMobile ? "4xl" : "5xl"}
             lineHeight={"110%"}
             w={"100%"}
           >
-            {title ?? "기본 제목기본 제목기본 제목"} <br />
-            <Text as={"span"} color={"green.400"} fontSize={"5xl"}>
-              {titleHighlight ?? "기본 하이라이트"}
-            </Text>
+            {title ?? "잘 나가는 타이어만 싸-악 모았다!"} <br />
           </Heading>
           <Text
-            color={"gray.500"}
-            fontSize={{ base: "2xl", sm: "2xl", md: "2xl" }}
-            w={"100%"}
+            as={"span"}
+            color={"green.400"}
+            fontWeight={700}
+            fontSize={isMobile ? "4xl" : "5xl"}
           >
-            {content ??
-              "기본 부연설명 공간기본 부연설명 공간기본 부연설명 공간기본 부연설명 공간"}
+            {titleHighlight ??
+              "자동차와 완벽한 조화를 이루는 타이어, 지금 찾아보세요"}
           </Text>
           <Flex
             direction={"row"}
@@ -51,18 +64,9 @@ export const TireCTA = ({ title, titleHighlight, content }: CTAProps) => {
             position={"relative"}
             mt={"10%"}
             w={"100%"}
-          >
-            <Box
-              bgColor={"white"}
-              h={"5rem"}
-              w={"100%"}
-              boxShadow={"lg"}
-              borderRadius={"lg"}
-            >
-              <SearchBar></SearchBar>
-            </Box>
-          </Flex>
+          ></Flex>
         </Stack>
+        <TireSearchModal />
       </Container>
     </Flex>
   );
