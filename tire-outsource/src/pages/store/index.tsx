@@ -81,7 +81,12 @@ const StorePage = () => {
           </Flex>
         </Flex>
         <Divider orientation="horizontal" />
-        <Flex flexFlow={"column"}>
+        <Flex
+          flexFlow={"column"}
+          flexFlow={"column"}
+          minH={"md"}
+          align={"center"}
+        >
           <RenderedStoreList />
         </Flex>
       </Box>

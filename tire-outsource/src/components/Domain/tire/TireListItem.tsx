@@ -28,7 +28,15 @@ const TireListItem = ({ tire }: TireListItemProps) => {
   };
 
   return (
-    <Card p={0} onClick={handleClickCard} boxShadow={"none"}>
+    <Card
+      p={0}
+      onClick={handleClickCard}
+      boxShadow={"none"}
+      cursor={"pointer"}
+      _hover={{ boxShadow: "lg" }}
+      transitionDuration={"500ms"}
+      transition={"ease-in-out"}
+    >
       <Image
         src={
           tire?.thumbnailImage ??

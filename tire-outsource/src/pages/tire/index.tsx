@@ -23,24 +23,17 @@ const TirePage = () => {
     tireListWithFilterState
   );
   const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const { targetRefTop, scrollToTarget: scrollTop } = useScroll();
+
+  useEffect(() => {
+    scrollTop();
+  }, []);
 
   const router = useRouter();
 
-  useEffect(() => {
-    const handleRouteChange = () => {
-      window.scrollTo(0, 0);
-    };
-
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    // When the component is unmounted, unsubscribe from the event
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
-
   return (
     <Box>
+      <div ref={targetRefTop}></div>
       <Box bgColor={"gray"} w={"100%"} boxShadow={"md"}>
         <TireCTA />
       </Box>

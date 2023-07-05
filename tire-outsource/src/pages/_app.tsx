@@ -18,7 +18,45 @@ export const theme = extendTheme({
       ":root": {
         fontSize: "10px", // 1rem = 10px로 설정
         boxSizing: "border-box",
+        fontFamily: "NanumSquareR",
       },
+    },
+  },
+  fonts: {
+    body: "NanumSquareR, sans-serif",
+    heading: "NanumSquareR, sans-serif",
+  },
+  fontWeights: {
+    normal: "NanumSquareR, NanumSquare_acR",
+    bold: "NanumSquareB, NanumSquare_acB",
+    extraBold: "NanumSquareEB, NanumSquare_acEB",
+
+    // 나머지 폰트 가중치에 대해 여기에 정의하세요
+  },
+  fontSize: {
+    md: {
+      fontFamily: "NanumSquareR, NanumSquare_acR",
+    },
+    lg: {
+      fontFamily: "NanumSquareB, NanumSquare_acB",
+    },
+    xl: {
+      fontFamily: "NanumSquareEB, NanumSquare_acEB",
+    },
+    "2xl": {
+      fontFamily: "NanumSquareEB, NanumSquare_acEB",
+    },
+    "3xl": {
+      fontFamily: "NanumSquareEB, NanumSquare_acEB",
+    },
+    "4xl": {
+      fontFamily: "NanumSquareEB, NanumSquare_acEB",
+    },
+    "5xl": {
+      fontFamily: "NanumSquareEB, NanumSquare_acEB",
+    },
+    "6xl": {
+      fontFamily: "NanumSquareEB, NanumSquare_acEB",
     },
   },
 });

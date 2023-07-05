@@ -34,7 +34,7 @@ export const TireCTA = ({ title, titleHighlight, content }: CTAProps) => {
         />
       </Head>
 
-      <Container maxW={"6xl"}>
+      <Container maxW={"8xl"}>
         <Stack
           as={Box}
           textAlign={"center"}

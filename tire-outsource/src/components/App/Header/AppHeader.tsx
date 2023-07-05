@@ -18,7 +18,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
-import React, { RefObject } from "react";
+import React, { PropsWithRef, RefObject } from "react";
 import { FocusableElement } from "@chakra-ui/utils";
 import SearchBar from "@/components/Domain/tire/Search/SearchBar";
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -245,42 +245,46 @@ export const HeaderNav = () => {
   );
 };
 
-export const AppHeader = () => {
+export const AppHeader = (props: PropsWithRef<any>) => {
   return (
-    <Box
-      as={"header"}
-      top={0}
-      zIndex={10}
-      minH={"9rem"}
-      w={"100%"}
-      position={"sticky"}
-    >
-      <Flex
-        w={"100%"}
-        bgColor={"white"}
-        boxShadow={"lg"}
+    <>
+      <div></div>
+      <Box
+        ref={props.ref}
+        as={"header"}
+        top={0}
+        zIndex={10}
         minH={"9rem"}
-        flexDir={"row"}
-        pr={"2.2rem"}
-        pl={"2.2rem"}
-        justify={"center"}
-        borderBottom="1px solid rgba(255, 255, 255, 0.2)"
+        w={"100%"}
+        position={"sticky"}
       >
         <Flex
-          as={"section"}
           w={"100%"}
+          bgColor={"white"}
+          boxShadow={"lg"}
+          minH={"9rem"}
           flexDir={"row"}
-          justify={"space-between"}
-          align={"center"}
+          pr={"2.2rem"}
+          pl={"2.2rem"}
+          justify={"center"}
+          borderBottom="1px solid rgba(255, 255, 255, 0.2)"
         >
-          {/*logo*/}
-          <HeaderLogo />
-          {/*search bar*/}
-          <HeaderSearchBar />
-          {/*nav*/}
-          <HeaderNav />
+          <Flex
+            as={"section"}
+            w={"100%"}
+            flexDir={"row"}
+            justify={"space-between"}
+            align={"center"}
+          >
+            {/*logo*/}
+            <HeaderLogo />
+            {/*search bar*/}
+            <HeaderSearchBar />
+            {/*nav*/}
+            <HeaderNav />
+          </Flex>
         </Flex>
-      </Flex>
-    </Box>
+      </Box>
+    </>
   );
 };

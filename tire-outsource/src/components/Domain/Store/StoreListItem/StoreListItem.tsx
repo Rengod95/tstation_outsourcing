@@ -34,7 +34,7 @@ export const StoreListItem = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   return (
-    <Container maxW={"7xl"} p="12" minH={"30rem"}>
+    <Container maxW={"7xl"} p="12" mt={isMobile ? "10rem" : 0}>
       <Box
         display="flex"
         flexDirection={{ base: "column", sm: "row" }}
@@ -42,17 +42,25 @@ export const StoreListItem = ({
         boxShadow={"xl"}
         borderRadius="2xl"
       >
-        <Box display="flex" flex="1" position="relative" alignItems="center">
-          <Box width={{ base: "100%" }} zIndex="2" h={"100%"} borderRadius="xl">
+        <Box
+          display="flex"
+          flex="1"
+          position="relative"
+          alignItems="center"
+          pl={{ base: 10, xs: 0, sm: 10 }}
+        >
+          <Box width={{ base: "100%" }} zIndex="2">
             <Image
               borderRadius="xl"
-              h={"100%"}
+              w={"100%"}
+              minH={"25rem"}
+              h={"25rem"}
               src={
                 image ??
                 "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
               }
               alt="some good alt text"
-              objectFit="contain"
+              objectFit="cover"
             />
           </Box>
         </Box>

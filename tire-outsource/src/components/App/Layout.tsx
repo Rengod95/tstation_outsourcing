@@ -1,28 +1,42 @@
 import React, { PropsWithChildren, useEffect } from "react";
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, Box, IconButton } from "@chakra-ui/react";
 import { AppHeader } from "@/components/App/Header/AppHeader";
 import { useRouter } from "next/router";
+import { ArrowUpIcon } from "@chakra-ui/icons";
+import { useScroll } from "@/utils/hooks/useScroll";
 
 export type LayoutProps = PropsWithChildren<NonNullable<unknown>>;
+
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
 
+  const { targetRef, scrollToTarget } = useScroll();
+
   useEffect(() => {
-    const handleRouteChange = () => {
-      window.scrollTo(0, 0);
-    };
+    scrollToTarget();
+  }, []);
 
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    // When the component is unmounted, unsubscribe from the event
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
+  const ScrollToTopButton = () => {
+    return (
+      <IconButton
+        onClick={scrollToTarget}
+        icon={<ArrowUpIcon />}
+        position="fixed"
+        bottom="4rem"
+        right="4rem"
+        isRound
+        w={"5rem"}
+        h={"5rem"}
+        bgColor={"green.400"}
+        aria-label="Scroll to top"
+      />
+    );
+  };
 
   return (
     <>
       <AppHeader />
+      <div ref={targetRef}></div>
       {/* Main Content */}
       <Box as="main" flex="1" w={"100%"} h={"100%"}>
         {children}
@@ -31,6 +45,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Box as="footer" bg="gray.200" p={4} textAlign="center">
         <p>© 2023 TireN. All rights reserved.</p>
       </Box>
+      <ScrollToTopButton />
     </>
   );
 };
