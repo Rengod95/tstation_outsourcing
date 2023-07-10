@@ -17,10 +17,12 @@ import React, { useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { calculateDiscountRate } from "@/utils/getDiscountPercent";
 import { formatNumberWithCommas } from "@/utils/formatNumberComma";
+import { useRouter } from "next/router";
 
 const TireDetail = (tire: Tire) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [sizeWatch, setSizeWatch] = useState<string>("");
+  const router = useRouter();
 
   return (
     <Flex
@@ -141,6 +143,9 @@ const TireDetail = (tire: Tire) => {
               boxShadow={"md"}
               minH={"4rem"}
               fontSize={"2xl"}
+              onClick={() => {
+                router.push("https://tna.channel.io/lounge");
+              }}
             >
               구매하기
             </Button>
@@ -151,6 +156,9 @@ const TireDetail = (tire: Tire) => {
               boxShadow={"md"}
               minH={"4rem"}
               fontSize={"2xl"}
+              onClick={() => {
+                router.push("https://tna.channel.io/lounge");
+              }}
             >
               실시간 상담
             </Button>
