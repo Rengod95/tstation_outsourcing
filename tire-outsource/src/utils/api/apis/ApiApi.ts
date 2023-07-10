@@ -137,9 +137,10 @@ export class ApiApi extends runtime.BaseAPI {
    *
    */
   async listListTireSizesRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    query?: object
   ): Promise<runtime.ApiResponse<Array<any>>> {
-    const queryParameters: any = {};
+    const queryParameters: any = query;
 
     const headerParameters: runtime.HTTPHeaders = {};
 

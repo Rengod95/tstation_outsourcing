@@ -5,7 +5,7 @@ export const useScroll = () => {
 
   const scrollToTarget = () => {
     if (targetRef.current) {
-      targetRef.current?.scrollIntoView({ behavior: "smooth" });
+      targetRef.current?.scrollIntoView({ behavior: "instant" });
     }
   };
 

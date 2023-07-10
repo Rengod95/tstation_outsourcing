@@ -13,7 +13,14 @@ import React from "react";
 import SearchBar from "@/components/Domain/tire/Search/SearchBar";
 import TireSearchModal from "@/components/Domain/tire/Search/TireSearchForm/TireSearchModal";
 
-export const TireCTA = ({ title, titleHighlight, content }: CTAProps) => {
+export type Props = CTAProps & { onSearch: (...args: any) => void };
+
+export const TireCTA = ({
+  title,
+  titleHighlight,
+  content,
+  onSearch,
+}: Props) => {
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   return (
     <Flex
@@ -66,7 +73,7 @@ export const TireCTA = ({ title, titleHighlight, content }: CTAProps) => {
             w={"100%"}
           ></Flex>
         </Stack>
-        <TireSearchModal />
+        <TireSearchModal onSearch={onSearch} />
       </Container>
     </Flex>
   );

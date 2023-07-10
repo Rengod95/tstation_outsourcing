@@ -53,7 +53,7 @@ export default function Document() {
     }
   })();
   ChannelIO('boot', {
-    "pluginKey": "${process.env.NEXT_PUBLIC_CHANNEL_IO_KEY}"
+    "pluginKey": "556ac74e-ca9e-4c98-8cd4-3f2b6df2ed2f"
   });
 	`,
           }}

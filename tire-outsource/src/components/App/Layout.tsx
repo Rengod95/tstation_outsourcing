@@ -14,13 +14,15 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     scrollToTarget();
-  }, []);
+  }, [router.pathname]);
 
   const ScrollToTopButton = () => {
     return (
       <IconButton
         onClick={scrollToTarget}
-        icon={<ArrowUpIcon />}
+        zIndex={9999}
+        boxShadow={"2xl"}
+        icon={<ArrowUpIcon w={"2.5rem"} h={"2.5rem"} />}
         position="fixed"
         bottom="4rem"
         right="4rem"
@@ -35,8 +37,9 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <>
-      <AppHeader />
       <div ref={targetRef}></div>
+      <AppHeader />
+
       {/* Main Content */}
       <Box as="main" flex="1" w={"100%"} h={"100%"}>
         {children}

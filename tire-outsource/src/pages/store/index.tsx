@@ -4,8 +4,6 @@ import { StoreListItem } from "@/components/Domain/Store/StoreListItem/StoreList
 import { CallToActionWithAnnotation, Banner } from "@/components/UI/Banner";
 import { useScroll } from "@/utils/hooks/useScroll";
 import { useGetStoreList } from "@/components/Domain/Store/StoreListPage.hooks";
-import ReviewListItem from "@/components/Domain/review/ReviewListItem";
-import { ReviewSearchBar } from "@/components/Domain/review/ReviewSearchBar";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import Head from "next/head";
@@ -60,7 +58,7 @@ const StorePage = () => {
       <Head>
         <Script
           type="text/javascript"
-          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4291dcb2d439a4b95453c1350fbca094"
+          src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf3921d9ad516a8ffe048f66024f5be8"
         />
       </Head>
       <Box>
@@ -81,12 +79,7 @@ const StorePage = () => {
           </Flex>
         </Flex>
         <Divider orientation="horizontal" />
-        <Flex
-          flexFlow={"column"}
-          flexFlow={"column"}
-          minH={"md"}
-          align={"center"}
-        >
+        <Flex flexFlow={"column"} minH={"md"} align={"center"}>
           <RenderedStoreList />
         </Flex>
       </Box>

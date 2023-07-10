@@ -23,7 +23,7 @@ const TirePage = () => {
     tireListWithFilterState
   );
   const [isMobile] = useMediaQuery("(max-width: 480px)");
-  const { targetRefTop, scrollToTarget: scrollTop } = useScroll();
+  const { targetRef: targetRefTop, scrollToTarget: scrollTop } = useScroll();
 
   useEffect(() => {
     scrollTop();
@@ -35,7 +35,7 @@ const TirePage = () => {
     <Box>
       <div ref={targetRefTop}></div>
       <Box bgColor={"gray"} w={"100%"} boxShadow={"md"}>
-        <TireCTA />
+        <TireCTA onSearch={scrollToTarget} />
       </Box>
       {tireListWithFilter.length !== 0 && (
         <>
@@ -57,7 +57,7 @@ const TirePage = () => {
             p={20}
             h={"100%"}
             flexWrap={"wrap"}
-            justify={isMobile ? "center" : "space-around"}
+            justify={isMobile ? "center" : "flex-start"}
           >
             {tireListWithFilter.map((tire) => {
               return <TireListItem key={tire.id} tire={tire}></TireListItem>;

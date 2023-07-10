@@ -34,7 +34,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useGetTireList } from "@/components/Domain/tire/tire.hooks";
 import { ChevronDownIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useQuery } from "@tanstack/react-query";
-import { TireManufacturer } from "@/utils/api";
+import { ApiApi, TireManufacturer } from "@/utils/api";
 
 export type TiresSearchModalProps = {
   isOpen: boolean;
@@ -42,7 +42,11 @@ export type TiresSearchModalProps = {
 };
 
 export type SearchType = "size" | "car" | "manufacturer";
-export const TireSearchModal = () => {
+export const TireSearchModal = ({
+  onSearch,
+}: {
+  onSearch: (...args: any) => void;
+}) => {
   const [category, setCategory] = useState<SearchType>("car");
   const [categoryIsSelected, setCategoryIsSelected] = useState<boolean>(false);
 
@@ -70,18 +74,18 @@ export const TireSearchModal = () => {
         </Heading>
         <Divider color={"gray.400"} />
         <ButtonGroup>
-          <Button
-            fontSize={"2xl"}
-            p={8}
-            w={"100%"}
-            colorScheme={"green"}
-            onClick={() => {
-              setCategoryIsSelected(true);
-              setCategory("car");
-            }}
-          >
-            호환 차종
-          </Button>
+          {/*<Button*/}
+          {/*  fontSize={"2xl"}*/}
+          {/*  p={8}*/}
+          {/*  w={"100%"}*/}
+          {/*  colorScheme={"green"}*/}
+          {/*  onClick={() => {*/}
+          {/*    setCategoryIsSelected(true);*/}
+          {/*    setCategory("car");*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  호환 차종*/}
+          {/*</Button>*/}
           <Button
             fontSize={"2xl"}
             p={8}
@@ -107,16 +111,58 @@ export const TireSearchModal = () => {
             타이어 제조사
           </Button>
         </ButtonGroup>
-        {categoryIsSelected && category === "size" && <TireSizeSearch />}
+        {categoryIsSelected && category === "size" && (
+          <NewTireSizeSearch onSearch={onSearch} />
+        )}
         {categoryIsSelected && category === "manufacturer" && (
-          <TireManufacturerSearch />
+          <TireManufacturerSearch onSearch={onSearch} />
         )}
       </Flex>
     </Flex>
   );
 };
 
-export const TireSizeSearch = () => {
+const callAPI = async (step1?: string, step2?: string) => {
+  if (step2 && !step1) {
+    throw new Error("step2 cannot be provided without step1");
+  }
+
+  let basePath = " https://backend.tirenautomobile.com/api/v1/tire-sizes/";
+
+  const queryStrings: string[] = [];
+  if (step1) {
+    queryStrings.push(`step1=${step1}`);
+  }
+  if (step2) {
+    queryStrings.push(`step2=${step2}`);
+  }
+
+  if (queryStrings.length > 0) {
+    basePath += "?" + queryStrings.join("&");
+  }
+
+  const response = await fetch(basePath);
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+const NewTireSizeSearch = ({
+  onSearch,
+}: {
+  onSearch: (...args: any) => void;
+}) => {
+  const [baseTireSizes, setBaseTireSizes] = useState([]);
+  const [step1TireSizes, setStep1TireSizes] = useState([]);
+  const [step2TireSizes, setStep2TireSizes] = useState([]);
+  const [baseSize, setBaseSize] = useState("");
+  const [step1Size, setStep1Size] = useState("");
+  const [step2Size, setStep2Size] = useState("");
+
   const { data } = useGetTireList();
   const res: string[] = [];
   data?.forEach((tire) =>
@@ -129,10 +175,14 @@ export const TireSizeSearch = () => {
   const setFilter = useSetRecoilState(tireListWithFilterState);
   const { isOpen, onClose: alertClose, onOpen: alertOpen } = useDisclosure();
 
-  const [sizeWatch, setSizeWatch] = useState<string>("");
+  const resetSizes = () => {
+    setBaseSize("");
+    setStep1Size("");
+    setStep2Size("");
+  };
 
   const handleClickSearchButton = () => {
-    if (sizeWatch.length === 0) {
+    if (!baseSize || !step1Size || !step2Size) {
       alertOpen();
     } else {
       console.log(data);
@@ -140,11 +190,44 @@ export const TireSizeSearch = () => {
         console.log("진입");
         setFilter(
           data.filter((tire) =>
-            tire.sizes.some((size) => size.tireSize === sizeWatch)
+            tire.sizes.some(
+              (size) =>
+                size.tireSize === baseSize + "/" + step1Size + "R" + step2Size
+            )
           )
         );
+        resetSizes();
+        onSearch();
       }
     }
+  };
+
+  useEffect(() => {
+    callAPI()
+      .then((data) => setBaseTireSizes(data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  const handleClickBaseSize = (size: string) => {
+    if (step1Size.length > 0) {
+      resetSizes(); // 기본 사이즈 선택 시 사이즈 초기화
+    }
+    setBaseSize(size);
+    callAPI(size)
+      .then((data) => setStep1TireSizes(data))
+      .catch((error) => console.error(error));
+  };
+
+  const handleClickStep1Size = (size: string) => {
+    setStep1Size(size);
+    setStep2Size(""); // step1 사이즈 선택 시 step2 사이즈 초기화
+    callAPI(baseSize, size)
+      .then((data) => setStep2TireSizes(data))
+      .catch((error) => console.error(error));
+  };
+
+  const handleClickStep2Size = (size: string) => {
+    setStep2Size(size);
   };
 
   return (
@@ -161,11 +244,12 @@ export const TireSizeSearch = () => {
           <Menu>
             <MenuButton
               boxShadow={"base"}
+              w={"100%"}
               as={Button}
               rightIcon={<ChevronDownIcon />}
               fontSize={"xl"}
             >
-              {sizeWatch.length === 0 ? "사이즈를 선택해주세요" : sizeWatch}
+              {baseSize || "단면폭을 선택해주세요"}
             </MenuButton>
             <MenuList
               h={"10rem"}
@@ -173,22 +257,79 @@ export const TireSizeSearch = () => {
               minH={"10rem"}
               w={"100%"}
             >
-              {tireSizeList.map((size) => {
-                return (
-                  <MenuItem
-                    w={"100%"}
-                    key={size}
-                    value={size}
-                    onClick={() => {
-                      setSizeWatch(size);
-                    }}
-                  >
-                    {size}
-                  </MenuItem>
-                );
-              })}
+              {baseTireSizes.map((size) => (
+                <MenuItem
+                  w={"100%"}
+                  key={size}
+                  onClick={() => handleClickBaseSize(size)}
+                >
+                  {size}
+                </MenuItem>
+              ))}
             </MenuList>
           </Menu>
+          {baseSize && (
+            <Flex mt={4} w={"100%"}>
+              <Menu>
+                <MenuButton
+                  boxShadow={"base"}
+                  w={"100%"}
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  fontSize={"xl"}
+                >
+                  {step1Size || "편평비를 선택해주세요"}
+                </MenuButton>
+                <MenuList
+                  h={"10rem"}
+                  overflowY={"scroll"}
+                  minH={"10rem"}
+                  w={"100%"}
+                >
+                  {step1TireSizes.map((size) => (
+                    <MenuItem
+                      w={"100%"}
+                      key={size}
+                      onClick={() => handleClickStep1Size(size)}
+                    >
+                      {size}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Menu>
+            </Flex>
+          )}
+          {step1Size && (
+            <Flex mt={4} w={"100%"}>
+              <Menu>
+                <MenuButton
+                  boxShadow={"base"}
+                  w={"100%"}
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  fontSize={"xl"}
+                >
+                  {step2Size || "인치를 선택해주세요"}
+                </MenuButton>
+                <MenuList
+                  h={"10rem"}
+                  overflowY={"scroll"}
+                  minH={"10rem"}
+                  w={"100%"}
+                >
+                  {step2TireSizes.map((size) => (
+                    <MenuItem
+                      w={"100%"}
+                      key={size}
+                      onClick={() => handleClickStep2Size(size)}
+                    >
+                      {size}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Menu>
+            </Flex>
+          )}
         </Flex>
         <Button
           mt={4}
@@ -196,13 +337,14 @@ export const TireSizeSearch = () => {
           onClick={handleClickSearchButton}
           w={"100%"}
           h={"40px"}
+          fontSize={"3xl"}
         >
           검색
         </Button>
         {isOpen && (
           <Alert status="error" mt={4}>
             <AlertIcon />
-            <AlertTitle>타이어 사이즈를 선택해주세요!</AlertTitle>
+            <AlertTitle>모든 사이즈를 선택해주세요!</AlertTitle>
             <Button onClick={alertClose}>닫기</Button>
           </Alert>
         )}
@@ -211,7 +353,11 @@ export const TireSizeSearch = () => {
   );
 };
 
-export const TireManufacturerSearch = () => {
+export const TireManufacturerSearch = ({
+  onSearch,
+}: {
+  onSearch: (...args: any) => void;
+}) => {
   const { data } = useGetTireList();
   const setFilter = useSetRecoilState(tireListWithFilterState);
   const { isOpen, onClose: alertClose, onOpen: alertOpen } = useDisclosure();
@@ -229,6 +375,7 @@ export const TireManufacturerSearch = () => {
       if (data) {
         setFilter(data.filter((tire) => tire.manufacturer.name === manWatch));
       }
+      onSearch();
     }
   };
 
@@ -276,6 +423,7 @@ export const TireManufacturerSearch = () => {
           onClick={handleClickSearchButton}
           w={"100%"}
           h={"40px"}
+          fontSize={"3xl"}
         >
           검색
         </Button>
@@ -283,7 +431,9 @@ export const TireManufacturerSearch = () => {
           <Alert status="error" mt={4}>
             <AlertIcon />
             <AlertTitle>제조사를 먼저 선택해주세요!</AlertTitle>
-            <Button onClick={alertClose}>닫기</Button>
+            <Button fontSize={"3xl"} onClick={alertClose}>
+              닫기
+            </Button>
           </Alert>
         )}
       </Flex>

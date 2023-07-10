@@ -69,25 +69,12 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const channelService = new ChannelService();
     channelService.boot({
-      pluginKey: "YOUR_PLUGIN_KEY", // fill your plugin key
+      pluginKey: "556ac74e-ca9e-4c98-8cd4-3f2b6df2ed2f", // fill your plugin key
     });
     return () => {
       channelService.shutdown();
     };
   }, []);
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      window.scrollTo(0, 0);
-    };
-
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    // When the component is unmounted, unsubscribe from the event
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
 
   return (
     <RecoilRoot>
