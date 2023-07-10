@@ -21,11 +21,11 @@ const Layout = ({ children }: LayoutProps) => {
       <IconButton
         onClick={scrollToTarget}
         zIndex={9999}
-        boxShadow={"2xl"}
+        boxShadow={"0 0 4px black"}
         icon={<ArrowUpIcon w={"2.5rem"} h={"2.5rem"} />}
         position="fixed"
-        bottom="4rem"
-        right="4rem"
+        bottom="17%"
+        right="2rem"
         isRound
         w={"5rem"}
         h={"5rem"}
@@ -45,7 +45,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </Box>
       {/* Footer */}
-      <Box as="footer" bg="gray.200" p={4} textAlign="center">
+      <Box as="footer" bg="gray.200" p={4} textAlign="center" h={"100%"}>
         <p>© 2023 TireN. All rights reserved.</p>
       </Box>
       <ScrollToTopButton />

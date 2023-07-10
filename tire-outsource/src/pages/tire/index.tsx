@@ -37,11 +37,11 @@ const TirePage = () => {
       <Box bgColor={"gray"} w={"100%"} boxShadow={"md"}>
         <TireCTA onSearch={scrollToTarget} />
       </Box>
+      <div ref={targetRef}></div>
       {tireListWithFilter.length !== 0 && (
         <>
           <Flex
             h={"xs"}
-            ref={targetRef}
             align={"center"}
             flexFlow={"column"}
             justify={"center"}
@@ -57,7 +57,7 @@ const TirePage = () => {
             p={20}
             h={"100%"}
             flexWrap={"wrap"}
-            justify={isMobile ? "center" : "flex-start"}
+            justify={isMobile ? "center" : "center"}
           >
             {tireListWithFilter.map((tire) => {
               return <TireListItem key={tire.id} tire={tire}></TireListItem>;
